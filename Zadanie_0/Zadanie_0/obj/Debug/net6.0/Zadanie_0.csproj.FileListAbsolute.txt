@@ -1,0 +1,15 @@
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.exe
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.deps.json
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.runtimeconfig.json
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.dll
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.pdb
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.csproj.AssemblyReference.cache
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.GeneratedMSBuildEditorConfig.editorconfig
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.AssemblyInfoInputs.cache
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.AssemblyInfo.cs
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.csproj.CoreCompileInputs.cache
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.dll
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\refint\Zadanie_0.dll
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.pdb
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.genruntimeconfig.cache
+E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\ref\Zadanie_0.dll
