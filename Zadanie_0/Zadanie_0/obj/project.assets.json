@@ -8,19 +8,24 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Maćko\\.nuget\\packages\\": {}
+    "C:\\Users\\Maja\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Repos\\ludzienamoscie\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\Zadanie_0.csproj",
+      "projectUniqueName": "C:\\Users\\Maja\\Desktop\\documents\\semestr IV\\programowanie współbieżne\\zadania\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\Zadanie_0.csproj",
       "projectName": "Zadanie_0",
-      "projectPath": "E:\\Repos\\ludzienamoscie\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\Zadanie_0.csproj",
-      "packagesPath": "C:\\Users\\Maćko\\.nuget\\packages\\",
-      "outputPath": "E:\\Repos\\ludzienamoscie\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\obj\\",
+      "projectPath": "C:\\Users\\Maja\\Desktop\\documents\\semestr IV\\programowanie współbieżne\\zadania\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\Zadanie_0.csproj",
+      "packagesPath": "C:\\Users\\Maja\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Maja\\Desktop\\documents\\semestr IV\\programowanie współbieżne\\zadania\\Programowanie_Wspolbiezne_MC08\\Zadanie_0\\Zadanie_0\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Maćko\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Maja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +65,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

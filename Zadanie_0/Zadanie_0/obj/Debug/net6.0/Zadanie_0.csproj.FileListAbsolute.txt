@@ -13,3 +13,18 @@ E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\D
 E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.pdb
 E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.genruntimeconfig.cache
 E:\Repos\ludzienamoscie\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\ref\Zadanie_0.dll
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.exe
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.deps.json
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.runtimeconfig.json
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.dll
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\bin\Debug\net6.0\Zadanie_0.pdb
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.csproj.AssemblyReference.cache
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.AssemblyInfoInputs.cache
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.AssemblyInfo.cs
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.csproj.CoreCompileInputs.cache
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.dll
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\refint\Zadanie_0.dll
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.pdb
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\Zadanie_0.genruntimeconfig.cache
+C:\Users\Maja\Desktop\documents\semestr IV\programowanie współbieżne\zadania\Programowanie_Wspolbiezne_MC08\Zadanie_0\Zadanie_0\obj\Debug\net6.0\ref\Zadanie_0.dll
