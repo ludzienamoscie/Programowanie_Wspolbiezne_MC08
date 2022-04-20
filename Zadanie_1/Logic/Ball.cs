@@ -1,19 +1,36 @@
-﻿namespace Logic
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace Logic
 {
-    public class Ball
+    public class Ball : INotifyPropertyChanged
     {
-        private float _x;
-        private float _y;
-        private readonly float _r;
+        private Vector2D _v;
+        private readonly double _r;
 
-        public float X { get => _x; set => _x = value; }
-        public float Y { get => _y; set => _y = value; }
-        public float R => _r;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public Ball(float x, float y, float r)
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            _x = x;
-            _y = y;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public Vector2D V 
+        { 
+            get => _v;
+            set
+            {
+                if (value.Equals(_v))
+                    return;
+                _v = value;
+                RaisePropertyChanged(nameof(V));
+            }
+        }
+        public double R => _r;
+
+        public Ball(double x, double y, double r)
+        {
+            _v = new Vector2D(x, y);
             _r = r;
         }
     }

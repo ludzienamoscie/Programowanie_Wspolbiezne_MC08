@@ -9,51 +9,62 @@
         Title="MainWindow"
         ResizeMode="CanMinimize"
         Height="450" Width="800">
-    <Window.DataContext>
-        <vm:ViewModelWindow />
-    </Window.DataContext>
-    <Canvas>
-        <TextBox 
+
+	<Window.DataContext>
+		<vm:ViewModelWindow />
+	</Window.DataContext>
+
+	<Canvas>
+		<TextBox
             TextAlignment="Center"
             MaxLength="4"
             FontSize="20pt"
             Padding="0 5 0 0"
-            Margin="250 350 0 0" 
-            TextWrapping="Wrap" 
-            Text="{Binding BallNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-            VerticalAlignment="Top" 
-            Height="50" Width="100" />
+            TextWrapping="Wrap"
+            Text="{Binding BallNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            VerticalAlignment="Top"
+            Height="50" Width="100"
+            Canvas.Left="340" Canvas.Top="350" />
 
-        <Button 
-            Margin="450 350 0 0" 
-            Content="Start" 
-            VerticalAlignment="Top" 
+		<Button
+            Content="Stop"
+            VerticalAlignment="Center"
+            Command="{Binding Stop}"
+            Height="50" Width="100"
+            Canvas.Left="190" Canvas.Top="350"
+            HorizontalAlignment="Center" />
+
+		<Button
+            Content="Start"
+            VerticalAlignment="Center"
             Command="{Binding Start}"
-            Height="50" Width="100" />
+            Height="50" Width="100"
+            Canvas.Left="490" Canvas.Top="350"
+            HorizontalAlignment="Center" />
 
-        <Rectangle 
+		<Rectangle
             Stroke="Black"
             StrokeThickness="5"
-            Margin="10 10 10 10" 
+            Margin="10 10 10 10"
             Height="{Binding RectHeight}" Width="{Binding RectWidth}" />
 
-        <ItemsControl ItemsSource="{Binding Balls, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Ellipse Width="{Binding R}" Height="{Binding R}" Fill="Black"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Canvas>
+		<ItemsControl ItemsSource="{Binding Balls, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemContainerStyle>
+				<Style TargetType="ContentPresenter">
+					<Setter Property="Canvas.Left" Value="{Binding V.X}"/>
+					<Setter Property="Canvas.Top" Value="{Binding V.Y}"/>
+				</Style>
+			</ItemsControl.ItemContainerStyle>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Ellipse Width="{Binding R}" Height="{Binding R}" Fill="Black"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Canvas>
 </Window>

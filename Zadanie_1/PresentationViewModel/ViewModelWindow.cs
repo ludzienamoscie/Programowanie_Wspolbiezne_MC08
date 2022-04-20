@@ -1,15 +1,16 @@
-﻿using System.Windows.Input;
+﻿using System.Collections;
+using System.Windows.Input;
 using PresentationModel;
 
 namespace PresentationViewModel
 {
     public class ViewModelWindow : ViewModelBase
     {
-        private uint _ballNumber;
+        private int _ballNumber;
         private readonly int _rectWidth;
         private readonly int _rectHeight;
         private readonly Model _model;
-        private object _balls;
+        private IList _balls;
 
         public ViewModelWindow() : this(Model.CreateApi()) { }
 
@@ -19,8 +20,9 @@ namespace PresentationViewModel
             _rectWidth = model.RectWidth;
             _rectHeight = model.RectHeight;
             Start = new RelayCommand(() => StartAction());
+            Stop = new RelayCommand(() => StopAction());
         }
-        public uint BallNumber
+        public int BallNumber
         {
             get => _ballNumber;
             set
@@ -37,21 +39,26 @@ namespace PresentationViewModel
         }
 
         public ICommand Start { get; set; }
+        public ICommand Stop { get; set; }
 
         public void StartAction()
         {
             Balls = _model.Balls(_ballNumber);
+            _model.Move(Balls);
+        }
+        public void StopAction()
+        {
+            _model.Stop();
         }
         public int RectWidth 
         { 
             get => _rectWidth;
         }
-
         public int RectHeight
         {
             get => _rectHeight;
         }
-        public object Balls
+        public IList Balls
         {
             get => _balls;
             set
