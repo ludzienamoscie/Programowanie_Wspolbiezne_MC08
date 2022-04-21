@@ -4,16 +4,22 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Data;
 
 namespace Logic
 {
     public class BallFactory
     {
+        private readonly DataAPI _data;
         public List<Task> tasks;
         public CancellationToken token;
         public CancellationTokenSource tokenSource;
-        public BallFactory()
+
+        public BallFactory() : this(DataAPI.CreateBallData()) { }
+
+        public BallFactory(DataAPI data)
         {
+            _data = data;
         }
         // Tworzenie kul
         public ObservableCollection<Ball> CreateBalls(int number, double XLimit, double YLimit)
