@@ -43,6 +43,7 @@ namespace PresentationViewModel
 
         public void StartAction()
         {
+            _model.Stop();
             Balls = _model.Balls(_ballNumber);
             _model.Move(Balls);
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Logic
@@ -36,17 +37,19 @@ namespace Logic
 
         public Ball(Ball b)
         {
-            _r = b.R;
-            _v = new Vector2D(V);
+            if (b != null)
+            {
+                _r = b.R;
+                _v = new Vector2D(b.V);
+            }
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
-            if (obj is Ball)
+            if (obj is Ball other)
             {
-                Ball other = (Ball)obj;
                 if (other.V.Equals(V) && other.R == R)
                     return true;
                 return false;

@@ -46,17 +46,19 @@ namespace Logic
 
         public Vector2D(Vector2D v)
         {
-            X = v.X;
-            Y = v.Y;
+            if (v != null)
+            {
+                _x = v.X;
+                _y = v.Y;
+            }
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
-            if (obj is Vector2D)
+            if (obj is Vector2D other)
             {
-                Vector2D other = (Vector2D)obj;
                 if (this.X == other.X && this.Y == other.Y)
                     return true;
                 return false;

@@ -37,7 +37,7 @@ namespace Logic
         // Zatrzymanie kul
         public void EndOfTheParty()
         {
-            if (!tokenSource.IsCancellationRequested)
+            if (tokenSource != null && !tokenSource.IsCancellationRequested)
             {
                 tokenSource.Cancel();
             }
@@ -63,7 +63,7 @@ namespace Logic
             // Jak duzy krok
             double dash = 3;
             // Jak szybko robi krok
-            int speed = 20;
+            int speed = 15;
             while (true)
             {
                 await Task.Delay(speed);
