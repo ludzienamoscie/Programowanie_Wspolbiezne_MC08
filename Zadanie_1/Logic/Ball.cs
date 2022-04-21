@@ -33,5 +33,28 @@ namespace Logic
             _v = new Vector2D(x, y);
             _r = r;
         }
+
+        public Ball(Ball b)
+        {
+            _r = b.R;
+            _v = new Vector2D(V);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (obj is Ball)
+            {
+                Ball other = (Ball)obj;
+                if (other.V.Equals(V) && other.R == R)
+                    return true;
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

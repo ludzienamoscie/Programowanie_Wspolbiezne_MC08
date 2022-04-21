@@ -43,5 +43,28 @@ namespace Logic
             _x = x;
             _y = y;
         }
+
+        public Vector2D(Vector2D v)
+        {
+            X = v.X;
+            Y = v.Y;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (obj is Vector2D)
+            {
+                Vector2D other = (Vector2D)obj;
+                if (this.X == other.X && this.Y == other.Y)
+                    return true;
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
