@@ -1,14 +1,11 @@
-﻿namespace Data
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Data
 {
-    public class DataAPI
+    internal class DataAPI : DataAbstractAPI
     {
-        public static DataAPI CreateBallData()
-        {
-            return new BallData();
-        }
-        private class BallData : DataAPI
-        {
-            //Nothing
-        }
+        //Nothing
     }
 }

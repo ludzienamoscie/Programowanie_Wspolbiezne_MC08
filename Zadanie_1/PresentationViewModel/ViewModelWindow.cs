@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using PresentationModel;
 
@@ -45,7 +47,7 @@ namespace PresentationViewModel
         {
             _model.Stop();
             Balls = _model.Balls(_ballNumber);
-            _model.Move(Balls);
+            _model.Start(Balls);
         }
         public void StopAction()
         {
