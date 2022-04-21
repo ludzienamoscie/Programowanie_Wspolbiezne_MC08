@@ -1,33 +1,32 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Data;
 
+
+[assembly: InternalsVisibleTo("LogicTest")]
+
 namespace Logic
 {
-    public class BallFactory
+    internal class BallFactory : LogicAbstractAPI
     {
-        private readonly DataAPI _data;
-        public List<Task> tasks;
-        public CancellationToken token;
-        public CancellationTokenSource tokenSource;
-
-        public BallFactory() : this(DataAPI.CreateBallData()) { }
-
-        public BallFactory(DataAPI data)
-        {
-            _data = data;
-        }
+        private readonly DataAbstractAPI _data;
+        private List<Task> _tasks;
+        private CancellationToken _token;
+        private CancellationTokenSource _tokenSource;
+        public BallFactory() : this(DataAbstractAPI.CreateBallData()) { }
+        public BallFactory(DataAbstractAPI data) { _data = data; }
         // Tworzenie kul
-        public ObservableCollection<Ball> CreateBalls(int number, double XLimit, double YLimit)
+        public override IList CreateBalls(int number, double XLimit, double YLimit)
         {
             ObservableCollection<Ball> ballList = new ObservableCollection<Ball>();
-            tasks = new List<Task>();
-            tokenSource = new CancellationTokenSource();
-            token = tokenSource.Token;
+            _tasks = new List<Task>();
+            _tokenSource = new CancellationTokenSource();
+            _token = _tokenSource.Token;
             double x, y, r;
             Random random = new Random();
             for (int i = 0; i < number; i++)
@@ -41,15 +40,15 @@ namespace Logic
             return ballList;
         }
         // Zatrzymanie kul
-        public void EndOfTheParty()
+        public override void EndOfTheParty()
         {
-            if (tokenSource != null && !tokenSource.IsCancellationRequested)
+            if (_tokenSource != null && !_tokenSource.IsCancellationRequested)
             {
-                tokenSource.Cancel();
+                _tokenSource.Cancel();
             }
         }
         // Rozpoczecie ruchu kul
-        public void Dance(ObservableCollection<Ball> balls, double XLimit, double YLimit)
+        public override void Dance(IList balls, double XLimit, double YLimit)
         {
             Random random = new Random();
             double x, y;
@@ -58,7 +57,7 @@ namespace Logic
                 x = random.Next(10, (int)(XLimit - ball.R) - 1) + random.NextDouble();
                 y = random.Next(10, (int)(YLimit - ball.R) - 1) + random.NextDouble();
                 Thread.Sleep(1);
-                tasks.Add(Task.Run(() => Steps(ball, new Vector2D(x, y), XLimit, YLimit)));
+                _tasks.Add(Task.Run(() => Steps(ball, new Vector2D(x, y), XLimit, YLimit)));
             }
         }
         // Plynne przemieszczanie sie kuli do punktu v
@@ -85,7 +84,7 @@ namespace Logic
                     destination = new Vector2D(x, y);
                 }
                 // Sprawdzenie, czy nalezy zatrzymac kule
-                try { token.ThrowIfCancellationRequested(); }
+                try { _token.ThrowIfCancellationRequested(); }
                 catch (OperationCanceledException) { break; }
             }
         }

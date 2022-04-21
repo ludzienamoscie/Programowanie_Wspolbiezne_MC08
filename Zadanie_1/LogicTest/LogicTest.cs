@@ -47,7 +47,7 @@ namespace LogicTest
             BallFactory ballFactory = new BallFactory();
             int xlim = 100;
             int ylim = 100;
-            ObservableCollection<Ball> ballList = ballFactory.CreateBalls(100, xlim, ylim);
+            ObservableCollection<Ball> ballList = (ObservableCollection < Ball > )ballFactory.CreateBalls(100, xlim, ylim);
             foreach (Ball ball in ballList)
             {
                 Assert.IsTrue(ball.V.X < xlim);
@@ -68,7 +68,7 @@ namespace LogicTest
         public void MoveTest()
         {
             BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = ballFactory.CreateBalls(1, 100, 100);
+            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100);
             Ball ball = balls[0];
             ball.V.X = 1;
             ball.V.Y = 1;
@@ -89,13 +89,13 @@ namespace LogicTest
         public void StepsTest()
         {
             BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = ballFactory.CreateBalls(1, 100, 100);
+            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100);
             Ball ball = new Ball(balls[0]);
             ballFactory.Dance(balls, 500, 500);
             // Czekanie na zmiane wspolrzednych
             Thread.Sleep(50);
             Assert.AreNotEqual(balls[0], ball);
-            ballFactory.tokenSource.Cancel();
+            ballFactory.EndOfTheParty();
             Thread.Sleep(100);
             ball = new Ball(balls[0]);
             // Czekanie na zmiane wspolrzednych
