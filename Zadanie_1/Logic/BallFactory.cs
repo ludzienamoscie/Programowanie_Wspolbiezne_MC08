@@ -26,7 +26,7 @@ namespace Logic
             Random random = new Random();
             for (int i = 0; i < number; i++)
             {
-                r = random.Next(10, 40 - 1) + random.NextDouble();
+                r = 20;
                 x = random.Next(10, (int)(XLimit - r) - 1) + random.NextDouble();
                 y = random.Next(10, (int)(YLimit - r) - 1) + random.NextDouble();
 

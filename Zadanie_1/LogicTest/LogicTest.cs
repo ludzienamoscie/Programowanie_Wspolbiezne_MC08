@@ -57,7 +57,6 @@ namespace LogicTest
                     {
                         continue;
                     }
-                    Assert.AreNotEqual(ball2.R, ball.R);
                     Assert.IsFalse(ball2.V.X == ball.V.X && ball2.V.Y == ball.V.Y);
                 }
             }
