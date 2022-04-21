@@ -56,9 +56,9 @@ namespace Logic
             }
         }
         // Plynne przemieszczanie sie kuli do punktu v
-        public async void Steps(Ball ball, Vector2D v, double XLimit, double YLimit)
+        public async void Steps(Ball ball, Vector2D destination, double XLimit, double YLimit)
         {
-            Random random = new Random((int)(v.X * v.Y));
+            Random random = new Random((int)(destination.X * destination.Y));
             double x, y;
             // Jak duzy krok
             double dash = 3;
@@ -67,16 +67,16 @@ namespace Logic
             while (true)
             {
                 await Task.Delay(speed);
-                if (EuklideanDist(v, ball.V) > dash)
+                if (EuklideanDist(destination, ball.V) > dash)
                 {
-                    Move(ball, v, dash);
+                    Move(ball, destination, dash);
                 }
                 else
                 {
-                    ball.V = v;
+                    ball.V = destination;
                     x = random.Next(10, (int)(XLimit - ball.R) - 1) + random.NextDouble();
                     y = random.Next(10, (int)(YLimit - ball.R) - 1) + random.NextDouble();
-                    v = new Vector2D(x, y);
+                    destination = new Vector2D(x, y);
                 }
                 // Sprawdzenie, czy nalezy zatrzymac kule
                 try { token.ThrowIfCancellationRequested(); }
