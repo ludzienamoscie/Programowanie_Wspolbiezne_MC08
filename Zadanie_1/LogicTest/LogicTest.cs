@@ -2,6 +2,7 @@
 using Logic;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace LogicTest
 {
@@ -61,6 +62,7 @@ namespace LogicTest
                 }
             }
         }
+
         [TestMethod]
 
         public void MoveTest()
@@ -80,6 +82,25 @@ namespace LogicTest
             ballFactory.Move(ball, targetPos, 1);
             Assert.AreEqual(2, ball.V.X, 0.0001);
             Assert.AreEqual(3, ball.V.Y, 0.0001);
+        }
+
+        [TestMethod]
+
+        public void StepsTest()
+        {
+            BallFactory ballFactory = new BallFactory();
+            ObservableCollection<Ball> balls = ballFactory.CreateBalls(1, 100, 100);
+            Ball ball = new Ball(balls[0]);
+            ballFactory.Dance(balls, 500, 500);
+            // Czekanie na zmiane wspolrzednych
+            Thread.Sleep(50);
+            Assert.AreNotEqual(balls[0], ball);
+            ballFactory.tokenSource.Cancel();
+            Thread.Sleep(100);
+            ball = new Ball(balls[0]);
+            // Czekanie na zmiane wspolrzednych
+            Thread.Sleep(50);
+            Assert.AreEqual(balls[0], ball);
         }
     }
 }
