@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,16 +28,19 @@ namespace Logic
             _tasks = new List<Task>();
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
-            double x, y, r, m;
+            double x, y, r, m, vx, vy;
+            int maxSpeed = 3;
             Random random = new Random();
             for (int i = 0; i < number; i++)
             {
+                Thread.Sleep(1);
                 r = 20;
                 x = random.Next(10, (int)(XLimit - r) - 1) + random.NextDouble();
                 y = random.Next(10, (int)(YLimit - r) - 1) + random.NextDouble();
-                m = random.Next(1, (int)(MLimit) - 1) + random.NextDouble();
-
-                ballList.Add(new Ball(x, y, r, m));
+                m = random.Next(1, (int)MLimit - 1) + random.NextDouble();
+                vx = random.NextDouble() * maxSpeed * (random.Next(0, 1) == 0 ? -1 : 1);
+                vy = (maxSpeed - vx*vx) * (random.Next(0, 1) == 0 ? -1 : 1);
+                ballList.Add(new Ball(x, y, r, m, vx, vy));
             }
             return ballList;
         }
@@ -48,8 +52,62 @@ namespace Logic
                 _tokenSource.Cancel();
             }
         }
+
         // Rozpoczecie ruchu kul
         public override void Dance(IList balls, double XLimit, double YLimit)
+        {
+            foreach (Ball ball in balls)
+            {
+                _tasks.Add(Task.Run(() => Rolling(ball, XLimit, YLimit)));
+            }
+        }
+        public async void Rolling(Ball ball, double XLimit, double YLimit)
+        {
+            double r = ball.R / 2;
+            while (true)
+            {
+                await Task.Delay(20);
+                // Odbicie od prawej ściany
+                if (ball.Position.X + ball.Velocity.X + r > XLimit - 5)
+                {
+                    ball.Position.X = XLimit - r - 5;
+                    ball.Velocity.X *= -1;
+                }
+                // Odbicie od lewej ściany
+                else if (ball.Position.X + ball.Velocity.X - r < 5)
+                {
+                    ball.Position.X = 5 + r;
+                    ball.Velocity.X *= -1;
+                }
+                else
+                {
+                    ball.Position.X += ball.Velocity.X;
+                }
+
+                // Odbicie od dolnej ściany
+                if (ball.Position.Y + ball.Velocity.Y + r > YLimit - 5)
+                {
+                    ball.Position.Y = YLimit - r - 5;
+                    ball.Velocity.Y *= -1;
+                }
+                // Odbicie od górnej ściany
+                else if (ball.Position.Y + ball.Velocity.Y - r < 5)
+                {
+                    ball.Position.Y = 5 + r;
+                    ball.Velocity.Y *= -1;
+                }
+                else
+                {
+                    ball.Position.Y += ball.Velocity.Y;
+                }
+                // Sprawdzenie, czy nalezy zatrzymac kule
+                try { _token.ThrowIfCancellationRequested(); }
+                catch (OperationCanceledException) { break; }
+            }
+        }
+
+        // Rozpoczecie ruchu kul
+        public void Dance1(IList balls, double XLimit, double YLimit)
         {
             Random random = new Random();
             double x, y;
@@ -73,13 +131,13 @@ namespace Logic
             while (true)
             {
                 await Task.Delay(speed);
-                if (EuklideanDist(destination, ball.V) > dash)
+                if (EuklideanDist(destination, ball.Position) > dash)
                 {
                     Move(ball, destination, dash);
                 }
                 else
                 {
-                    ball.V = destination;
+                    ball.Position = destination;
                     x = random.Next(10, (int)(XLimit - ball.R) - 1) + random.NextDouble();
                     y = random.Next(10, (int)(YLimit - ball.R) - 1) + random.NextDouble();
                     destination = new Vector2D(x, y);
@@ -92,33 +150,33 @@ namespace Logic
         // Wyznaczanie kolejnych punktow odleglych od A o r w strone B
         public void Move(Ball A, Vector2D B, double r)
         {
-            double currDist = EuklideanDist(A.V, B);
+            double currDist = EuklideanDist(A.Position, B);
             double a, b, c, d, e, x1, x2;
-            if (A.V.X != B.X)
+            if (A.Position.X != B.X)
             {
-                (a, b) = LinearFactors(A.V, B);
+                (a, b) = LinearFactors(A.Position, B);
             }
             else // Przypadek, gdy punkt B jest nad lub pod punktem A
             {
-                if (currDist > EuklideanDist(B, new Vector2D(A.V.X, A.V.Y + 1)))
-                    A.V.Y++;
+                if (currDist > EuklideanDist(B, new Vector2D(A.Position.X, A.Position.Y + 1)))
+                    A.Position.Y++;
                 else
-                    A.V.Y--;
+                    A.Position.Y--;
                 return;
             }
             c = a * a + 1;
-            d = 2 * a * (b - A.V.Y) - 2 * A.V.X;
-            e = A.V.X * A.V.X - r * r + (b - A.V.Y) * (b - A.V.Y);
+            d = 2 * a * (b - A.Position.Y) - 2 * A.Position.X;
+            e = A.Position.X * A.Position.X - r * r + (b - A.Position.Y) * (b - A.Position.Y);
             (x1, x2) = QuadRoots(c, d, e);
-            if ( currDist > EuklideanDist(B, new Vector2D(x1, a * A.V.X + b)) )
+            if ( currDist > EuklideanDist(B, new Vector2D(x1, a * A.Position.X + b)) )
             {
-                A.V.X = x1;
-                A.V.Y = a * x1 + b;
+                A.Position.X = x1;
+                A.Position.Y = a * x1 + b;
             }
             else
             {
-                A.V.X = x2;
-                A.V.Y = a * x2 + b;
+                A.Position.X = x2;
+                A.Position.Y = a * x2 + b;
             }
         }
         // Pierwiastki funkcji kwadratowej
@@ -147,7 +205,7 @@ namespace Logic
         public (Vector2D, Vector2D) CollideBalls(Ball ball1, Ball ball2, Vector2D velocity1, Vector2D velocity2)
         {
             // Czy zderzają się
-            Vector2D relative_position = ball2.V - ball1.V;
+            Vector2D relative_position = ball2.Position - ball1.Position;
             // Kiedy są za daleko od siebie, nie zmieniaj prędkości
             if (relative_position.MagnitudeSquared() > ball1.R + ball2.R)
             {
@@ -163,8 +221,8 @@ namespace Logic
             {
                 return (velocity1, velocity2);
             }
-            Vector2D newVelocity1 = velocity1 - 2 * ball2.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity1 - velocity2, ball1.V - ball2.V) / (ball1.V - ball2.V).MagnitudeSquared() * (ball1.V - ball2.V);
-            Vector2D newVelocity2 = velocity2 - 2 * ball1.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity2 - velocity1, ball2.V - ball1.V) / (ball2.V - ball1.V).MagnitudeSquared() * (ball2.V - ball1.V);
+            Vector2D newVelocity1 = velocity1 - 2 * ball2.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity1 - velocity2, ball1.Position - ball2.Position) / (ball1.Position - ball2.Position).MagnitudeSquared() * (ball1.Position - ball2.Position);
+            Vector2D newVelocity2 = velocity2 - 2 * ball1.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity2 - velocity1, ball2.Position - ball1.Position) / (ball2.Position - ball1.Position).MagnitudeSquared() * (ball2.Position - ball1.Position);
             return (newVelocity1, newVelocity2);
         }
     }

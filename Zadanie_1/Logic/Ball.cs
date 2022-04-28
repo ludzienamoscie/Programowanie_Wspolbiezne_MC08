@@ -6,7 +6,8 @@ namespace Logic
 {
     public class Ball : INotifyPropertyChanged
     {
-        private Vector2D _v;
+        private Vector2D _position;
+        private Vector2D _velocity;
         private readonly double _r;
         private readonly double _m;
 
@@ -17,15 +18,27 @@ namespace Logic
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Vector2D V 
+        public Vector2D Position 
         { 
-            get => _v;
+            get => _position;
             set
             {
-                if (value.Equals(_v))
+                if (value.Equals(_position))
                     return;
-                _v = value;
-                RaisePropertyChanged(nameof(V));
+                _position = value;
+                RaisePropertyChanged(nameof(Position));
+            }
+        }
+
+        public Vector2D Velocity
+        {
+            get => _velocity;
+            set
+            {
+                if (value.Equals(_velocity))
+                    return;
+                _velocity = value;
+                RaisePropertyChanged(nameof(Velocity));
             }
         }
         public double R => _r;
@@ -34,7 +47,16 @@ namespace Logic
 
         public Ball(double x, double y, double r, double m)
         {
-            _v = new Vector2D(x, y);
+            _position = new Vector2D(x, y);
+            _velocity = new Vector2D(0, 0);
+            _r = r;
+            _m = m;
+        }
+
+        public Ball(double x, double y, double r, double m, double vx, double vy)
+        {
+            _position = new Vector2D(x, y);
+            _velocity = new Vector2D(vx, vy);
             _r = r;
             _m = m;
         }
@@ -45,7 +67,8 @@ namespace Logic
             {
                 _r = b.R;
                 _m = b.M;
-                _v = new Vector2D(b.V);
+                _position = new Vector2D(b.Position);
+                _velocity = new Vector2D(b.Velocity);
             }
         }
 
@@ -55,7 +78,7 @@ namespace Logic
                 return false;
             if (obj is Ball other)
             {
-                if (other.V.Equals(V) && other.R == R && other.M == M)
+                if (other.Position.Equals(Position) && other.R == R && other.M == M)
                     return true;
                 return false;
             }

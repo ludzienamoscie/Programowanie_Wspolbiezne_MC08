@@ -47,18 +47,18 @@ namespace LogicTest
             BallFactory ballFactory = new BallFactory();
             int xlim = 100;
             int ylim = 100;
-            ObservableCollection<Ball> ballList = (ObservableCollection < Ball > )ballFactory.CreateBalls(100, xlim, ylim);
+            ObservableCollection<Ball> ballList = (ObservableCollection < Ball > )ballFactory.CreateBalls(100, xlim, ylim, 100);
             foreach (Ball ball in ballList)
             {
-                Assert.IsTrue(ball.V.X < xlim);
-                Assert.IsTrue(ball.V.Y < ylim);
+                Assert.IsTrue(ball.Position.X < xlim);
+                Assert.IsTrue(ball.Position.Y < ylim);
                 foreach (Ball ball2 in ballList)
                 {
                     if (ball2 == ball)
                     {
                         continue;
                     }
-                    Assert.IsFalse(ball2.V.X == ball.V.X && ball2.V.Y == ball.V.Y);
+                    Assert.IsFalse(ball2.Position.X == ball.Position.X && ball2.Position.Y == ball.Position.Y);
                 }
             }
         }
@@ -68,20 +68,20 @@ namespace LogicTest
         public void MoveTest()
         {
             BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100);
+            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100, 100);
             Ball ball = balls[0];
-            ball.V.X = 1;
-            ball.V.Y = 1;
+            ball.Position.X = 1;
+            ball.Position.Y = 1;
             Vector2D targetPos = new Vector2D(2, 2);
             ballFactory.Move(ball, targetPos, Math.Sqrt(2));
-            Assert.AreEqual(2, ball.V.X, 0.0001);
-            Assert.AreEqual(2, ball.V.Y, 0.0001);
+            Assert.AreEqual(2, ball.Position.X, 0.0001);
+            Assert.AreEqual(2, ball.Position.Y, 0.0001);
 
             // Nad kulą
             targetPos = new Vector2D(2, 3);
             ballFactory.Move(ball, targetPos, 1);
-            Assert.AreEqual(2, ball.V.X, 0.0001);
-            Assert.AreEqual(3, ball.V.Y, 0.0001);
+            Assert.AreEqual(2, ball.Position.X, 0.0001);
+            Assert.AreEqual(3, ball.Position.Y, 0.0001);
         }
 
         [TestMethod]
@@ -89,7 +89,7 @@ namespace LogicTest
         public void StepsTest()
         {
             BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100);
+            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100, 100);
             Ball ball = new Ball(balls[0]);
             ballFactory.Dance(balls, 500, 500);
             // Czekanie na zmiane wspolrzednych
