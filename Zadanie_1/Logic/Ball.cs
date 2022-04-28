@@ -8,6 +8,7 @@ namespace Logic
     {
         private Vector2D _v;
         private readonly double _r;
+        private readonly double _m;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -29,10 +30,13 @@ namespace Logic
         }
         public double R => _r;
 
-        public Ball(double x, double y, double r)
+        public double M => _m;
+
+        public Ball(double x, double y, double r, double m)
         {
             _v = new Vector2D(x, y);
             _r = r;
+            _m = m;
         }
 
         public Ball(Ball b)
@@ -40,6 +44,7 @@ namespace Logic
             if (b != null)
             {
                 _r = b.R;
+                _m = b.M;
                 _v = new Vector2D(b.V);
             }
         }
@@ -50,7 +55,7 @@ namespace Logic
                 return false;
             if (obj is Ball other)
             {
-                if (other.V.Equals(V) && other.R == R)
+                if (other.V.Equals(V) && other.R == R && other.M == M)
                     return true;
                 return false;
             }

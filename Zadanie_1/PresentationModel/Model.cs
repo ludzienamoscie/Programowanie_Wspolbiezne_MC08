@@ -8,6 +8,7 @@ namespace PresentationModel
     {
         public abstract int RectWidth { get; }
         public abstract int RectHeight { get; }
+        public abstract int MassLimit { get; }
         public abstract IList Balls(int ballNumber);
         public abstract void Start(IList balls);
         public abstract void Stop();

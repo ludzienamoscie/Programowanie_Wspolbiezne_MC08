@@ -53,6 +53,47 @@ namespace Logic
             }
         }
 
+        public Vector2D Add(Vector2D other)
+        {
+            return new Vector2D(this.X + other.X, this.Y + other.Y);
+        }
+
+        public Vector2D MultiplyByScalar(double scalar)
+        {
+            return new Vector2D(scalar * this.X, scalar * this.Y);
+        }
+
+        // Iloczyn skalarny
+        public static double DotProduct(Vector2D v1, Vector2D v2)
+        {
+            return v1.X * v1.X + v2.Y * v2.Y;
+        }
+
+        // Długość wektora
+        public double MagnitudeSquared()
+        {
+            return this.X * this.X + this.Y * this.Y;
+        }
+
+        public static Vector2D operator+(Vector2D v1, Vector2D v2)
+        {
+            return v1.Add(v2);
+        }
+
+        public static Vector2D operator-(Vector2D v1, Vector2D v2)
+        {
+            return v1.Add(v2.MultiplyByScalar(-1));
+        }
+
+        public static Vector2D operator*(double scalar, Vector2D v)
+        {
+            return v.MultiplyByScalar(scalar);
+        }
+        public static Vector2D operator*(Vector2D v, double scalar)
+        {
+            return scalar * v;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

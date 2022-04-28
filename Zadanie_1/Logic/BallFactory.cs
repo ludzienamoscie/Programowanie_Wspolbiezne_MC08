@@ -21,21 +21,22 @@ namespace Logic
         public BallFactory() : this(DataAbstractAPI.CreateBallData()) { }
         public BallFactory(DataAbstractAPI data) { _data = data; }
         // Tworzenie kul
-        public override IList CreateBalls(int number, double XLimit, double YLimit)
+        public override IList CreateBalls(int number, double XLimit, double YLimit, double MLimit)
         {
             ObservableCollection<Ball> ballList = new ObservableCollection<Ball>();
             _tasks = new List<Task>();
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
-            double x, y, r;
+            double x, y, r, m;
             Random random = new Random();
             for (int i = 0; i < number; i++)
             {
                 r = 20;
                 x = random.Next(10, (int)(XLimit - r) - 1) + random.NextDouble();
                 y = random.Next(10, (int)(YLimit - r) - 1) + random.NextDouble();
+                m = random.Next(1, (int)(MLimit) - 1) + random.NextDouble();
 
-                ballList.Add(new Ball(x, y, r));
+                ballList.Add(new Ball(x, y, r, m));
             }
             return ballList;
         }
@@ -140,6 +141,31 @@ namespace Logic
         public double EuklideanDist(Vector2D A, Vector2D B)
         {
             return Math.Sqrt( (A.X - B.X) * (A.X - B.X) + (A.Y - B.Y) * (A.Y - B.Y) );
+        }
+
+        // Zderzenie kul
+        public (Vector2D, Vector2D) CollideBalls(Ball ball1, Ball ball2, Vector2D velocity1, Vector2D velocity2)
+        {
+            // Czy zderzają się
+            Vector2D relative_position = ball2.V - ball1.V;
+            // Kiedy są za daleko od siebie, nie zmieniaj prędkości
+            if (relative_position.MagnitudeSquared() > ball1.R + ball2.R)
+            {
+                return (velocity1, velocity2);
+            }
+            
+            Vector2D relative_velocity = velocity2 - velocity1;
+
+            // Kiedy prędkość względna jest skierowana "na zewnątrz" (nie lecą na siebie), nie zmieniaj prędkości
+            // Czyli kiedy kąt pomiędzy wektorem położenia względnego a wektorem względnej prędkości jest w zakresie [-pi/2, pi/2]
+            // Wtedy i tylko wtedy iloczyn skalarny jest > 0
+            if (Vector2D.DotProduct(relative_position, relative_velocity) > 0)
+            {
+                return (velocity1, velocity2);
+            }
+            Vector2D newVelocity1 = velocity1 - 2 * ball2.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity1 - velocity2, ball1.V - ball2.V) / (ball1.V - ball2.V).MagnitudeSquared() * (ball1.V - ball2.V);
+            Vector2D newVelocity2 = velocity2 - 2 * ball1.M / (ball1.M + ball2.M) * Vector2D.DotProduct(velocity2 - velocity1, ball2.V - ball1.V) / (ball2.V - ball1.V).MagnitudeSquared() * (ball2.V - ball1.V);
+            return (newVelocity1, newVelocity2);
         }
     }
 }
