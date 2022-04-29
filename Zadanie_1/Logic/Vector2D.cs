@@ -66,7 +66,7 @@ namespace Logic
         // Iloczyn skalarny
         public static double DotProduct(Vector2D v1, Vector2D v2)
         {
-            return v1.X * v1.X + v2.Y * v2.Y;
+            return v1.X * v2.X + v1.Y * v2.Y;
         }
 
         // Długość wektora
