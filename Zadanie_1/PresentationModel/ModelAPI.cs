@@ -7,14 +7,15 @@ namespace PresentationModel
     internal class ModelAPI : Model
     {
         private readonly LogicAbstractAPI _logic;
-        public override int RectWidth => 760;
-        public override int RectHeight => 310;
-        public override int MassLimit => 100;
+        public override double RectWidth => 785;
+        public override double RectHeight => 320;
+        public override double Stroke => 10;
+        public override double MassLimit => 100;
         public override IList Balls(int ballNumber) 
-            => _logic.CreateBalls(ballNumber, RectWidth, RectHeight, MassLimit);
+            => _logic.CreateBalls(ballNumber, RectWidth, RectHeight, Stroke, MassLimit);
         public override void Start(IList balls)
         {
-            _logic.Dance(balls, RectWidth, RectHeight);
+            _logic.Dance(balls, RectWidth, RectHeight, Stroke);
         }
         public override void Stop() => _logic.EndOfTheParty();
 

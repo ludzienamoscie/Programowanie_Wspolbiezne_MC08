@@ -24,7 +24,7 @@ namespace Logic
         public BallFactory() : this(DataAbstractAPI.CreateBallData()) { }
         public BallFactory(DataAbstractAPI data) { _data = data; }
         // Tworzenie kul
-        public override IList CreateBalls(int number, double XLimit, double YLimit, double MLimit)
+        public override IList CreateBalls(int number, double XLimit, double YLimit, double Stroke, double MLimit)
         {
             ObservableCollection<Ball> ballList = new ObservableCollection<Ball>();
             _movingMask = new bool[number];
@@ -33,18 +33,18 @@ namespace Logic
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
             double x, y, r, m, vx, vy;
-            int maxSpeed = 3;
+            double maxSpeed = 2.5;
             Random random = new Random();
             for (int i = 0; i < number; i++)
             {
                 _movingMask[i] = true;
                 Thread.Sleep(1);
                 r = 20;
-                x = random.Next(10, (int)(XLimit - r) - 1) + random.NextDouble();
-                y = random.Next(10, (int)(YLimit - r) - 1) + random.NextDouble();
+                x = random.Next((int)Stroke, (int)(XLimit - r) - 1) + random.NextDouble();
+                y = random.Next((int)Stroke, (int)(YLimit - r) - 1) + random.NextDouble();
                 m = random.Next(1, (int)MLimit - 1) + random.NextDouble();
                 vx = random.NextDouble() * maxSpeed * (random.Next(0, 1) == 0 ? -1 : 1);
-                vy = (maxSpeed - vx*vx) * (random.Next(0, 1) == 0 ? -1 : 1);
+                vy = Math.Sqrt(maxSpeed * maxSpeed - vx*vx) * (random.Next(0, 1) == 0 ? -1 : 1);
                 ballList.Add(new Ball(x, y, r, m, vx, vy));
             }
             return ballList;
@@ -59,19 +59,18 @@ namespace Logic
         }
 
         // Rozpoczecie ruchu kul
-        public override void Dance(IList balls, double XLimit, double YLimit)
+        public override void Dance(IList balls, double XLimit, double YLimit, double Stroke)
         {
             int i = 0;
             foreach (Ball ball in balls)
             {
-                _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, i++)));
+                _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, Stroke, i++)));
             }
             _tasks.Add(Task.Run(() => LookForCollisionsNaive(balls)));
         }
-        public async void Rolling(IList balls, double XLimit, double YLimit, int ballIndex)
+        public async void Rolling(IList balls, double XLimit, double YLimit, double Stroke, int ballIndex)
         {
             Ball ball = (Ball)balls[ballIndex];
-            double r = ball.R / 2;
             while (true)
             {
                 await Task.Delay(20);
@@ -81,15 +80,15 @@ namespace Logic
                     continue;
                 }
                 // Odbicie od prawej ściany
-                if (ball.Position.X + ball.Velocity.X + r > XLimit - 5)
+                if (ball.Position.X + ball.Velocity.X > XLimit - ball.R - Stroke)
                 {
-                    ball.Position.X = XLimit - r - 5;
+                    ball.Position.X = XLimit - ball.R - Stroke;
                     ball.Velocity.X *= -1;
                 }
                 // Odbicie od lewej ściany
-                else if (ball.Position.X + ball.Velocity.X - r < 5)
+                else if (ball.Position.X + ball.Velocity.X < Stroke)
                 {
-                    ball.Position.X = 5 + r;
+                    ball.Position.X = Stroke;
                     ball.Velocity.X *= -1;
                 }
                 else
@@ -98,15 +97,15 @@ namespace Logic
                 }
 
                 // Odbicie od dolnej ściany
-                if (ball.Position.Y + ball.Velocity.Y + r > YLimit - 5)
+                if (ball.Position.Y + ball.Velocity.Y > YLimit - ball.R - Stroke)
                 {
-                    ball.Position.Y = YLimit - r - 5;
+                    ball.Position.Y = YLimit - ball.R - Stroke;
                     ball.Velocity.Y *= -1;
                 }
                 // Odbicie od górnej ściany
-                else if (ball.Position.Y + ball.Velocity.Y - r < 5)
+                else if (ball.Position.Y + ball.Velocity.Y < Stroke)
                 {
-                    ball.Position.Y = 5 + r;
+                    ball.Position.Y = Stroke;
                     ball.Velocity.Y *= -1;
                 }
                 else
@@ -134,14 +133,11 @@ namespace Logic
                         Ball ball2 = (Ball)balls[j];
                         Vector2D relativePosition = ball1.Position - ball2.Position;
                         double distance = Math.Sqrt(relativePosition.MagnitudeSquared());
-                        if (distance * 2< ball1.R + ball2.R)
+                        if (distance * 2 < ball1.R + ball2.R)
                         {
                             _movingMask[i] = false;
                             _movingMask[j] = false;
-                            Vector2D newV1, newV2;
-                            (newV1, newV2) = EllasticCollision(ball1.M, ball2.M, ball1.Velocity, ball2.Velocity, ball1.Position, ball2.Position);
-                            ball1.Velocity = newV1;
-                            ball2.Velocity = newV2;
+                            EllasticCollision(ball1, ball2);
                             _movingMask[i] = true;
                             _movingMask[j] = true;
                         }                        
@@ -175,22 +171,23 @@ namespace Logic
             return Math.Sqrt( (A.X - B.X) * (A.X - B.X) + (A.Y - B.Y) * (A.Y - B.Y) );
         }
 
-        public (Vector2D, Vector2D) EllasticCollision(double m1, double m2, Vector2D v1, Vector2D v2, Vector2D pos1, Vector2D pos2)
+        public void EllasticCollision(Ball ball1, Ball ball2)
         {
-            Vector2D relativeVelocity = v2 - v1;
-            Vector2D relativePos = pos2 - pos1;
+            Vector2D relativeVelocity = ball2.Velocity - ball1.Velocity;
+            Vector2D relativePos = ball2.Position - ball1.Position;
             // Jeśli nie lecą na siebie
             if (Vector2D.DotProduct(relativePos, relativeVelocity) > 0)
             {
-                return (v1, v2);
+                return;
             }
-            Vector2D newV1 = v1 - 2 * m2 / (m1 + m2) * Vector2D.DotProduct(v1 - v2, pos1 - pos2) / (pos1 - pos2).MagnitudeSquared() * (pos1 - pos2);
-            Vector2D newV2 = v2 - 2 * m1 / (m1 + m2) * Vector2D.DotProduct(v2 - v1, pos2 - pos1) / (pos2 - pos1).MagnitudeSquared() * (pos2 - pos1);
-            if (Double.IsNaN(v1.X) || Double.IsNaN(v2.X) || Double.IsNaN(v1.Y) || Double.IsNaN(v2.Y))
+            Vector2D newV1 = ball1.Velocity - 2 * ball2.M / (ball1.M + ball2.M) * Vector2D.DotProduct(ball1.Velocity - ball2.Velocity, ball1.Position - ball2.Position) / (ball1.Position - ball2.Position).MagnitudeSquared() * (ball1.Position - ball2.Position);
+            Vector2D newV2 = ball2.Velocity - 2 * ball1.M / (ball1.M + ball2.M) * Vector2D.DotProduct(ball2.Velocity - ball1.Velocity, ball2.Position - ball1.Position) / (ball2.Position - ball1.Position).MagnitudeSquared() * (ball2.Position - ball1.Position);
+            if (Double.IsNaN(ball1.Velocity.X) || Double.IsNaN(ball2.Velocity.X) || Double.IsNaN(ball1.Velocity.Y) || Double.IsNaN(ball2.Velocity.Y))
             {
-                return (v1, v2);
+                return;
             }
-            return (newV1, newV2);
+            ball1.Velocity = newV1;
+            ball2.Velocity = newV2;
         }
     }
 }

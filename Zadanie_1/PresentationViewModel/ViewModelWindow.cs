@@ -9,8 +9,9 @@ namespace PresentationViewModel
     public class ViewModelWindow : ViewModelBase
     {
         private int _ballNumber;
-        private readonly int _rectWidth;
-        private readonly int _rectHeight;
+        private readonly double _rectWidth;
+        private readonly double _rectHeight;
+        private readonly double _stroke;
         private readonly Model _model;
         private IList _balls;
 
@@ -21,6 +22,7 @@ namespace PresentationViewModel
             _model = model;
             _rectWidth = model.RectWidth;
             _rectHeight = model.RectHeight;
+            _stroke = model.Stroke;
             Start = new RelayCommand(() => StartAction());
             Stop = new RelayCommand(() => StopAction());
         }
@@ -53,13 +55,17 @@ namespace PresentationViewModel
         {
             _model.Stop();
         }
-        public int RectWidth 
+        public double RectWidth 
         { 
             get => _rectWidth;
         }
-        public int RectHeight
+        public double RectHeight
         {
             get => _rectHeight;
+        }
+        public double Stroke
+        {
+            get => _stroke;
         }
         public IList Balls
         {

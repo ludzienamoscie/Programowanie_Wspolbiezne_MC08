@@ -6,9 +6,10 @@ namespace PresentationModel
 {
     public abstract class Model
     {
-        public abstract int RectWidth { get; }
-        public abstract int RectHeight { get; }
-        public abstract int MassLimit { get; }
+        public abstract double RectWidth { get; }
+        public abstract double RectHeight { get; }
+        public abstract double Stroke { get; }
+        public abstract double MassLimit { get; }
         public abstract IList Balls(int ballNumber);
         public abstract void Start(IList balls);
         public abstract void Stop();

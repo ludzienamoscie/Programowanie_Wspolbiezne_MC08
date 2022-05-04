@@ -10,11 +10,11 @@
         ResizeMode="CanMinimize"
         Height="450" Width="800">
 
-	<Window.DataContext>
-		<vm:ViewModelWindow />
-	</Window.DataContext>
-
-	<Canvas>
+    <Window.DataContext>
+        <vm:ViewModelWindow />
+    </Window.DataContext>
+    
+    <Canvas>
 		<TextBox
             TextAlignment="Center"
             MaxLength="4"
@@ -44,8 +44,8 @@
 
 		<Rectangle
             Stroke="Black"
-            StrokeThickness="5"
-            Margin="10 10 10 10"
+            StrokeThickness="{Binding Stroke}"
+            Margin="0 0 0 0"
             Height="{Binding RectHeight}" Width="{Binding RectWidth}" />
 
 		<ItemsControl ItemsSource="{Binding Balls, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

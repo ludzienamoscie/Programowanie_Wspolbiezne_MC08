@@ -9,8 +9,8 @@ namespace Logic
     public abstract class LogicAbstractAPI
     {
         public static LogicAbstractAPI CreateBallAPI() => new BallFactory();
-        public abstract IList CreateBalls(int number, double XLimit, double YLimit, double MLimit);
-        public abstract void Dance(IList balls, double XLimit, double YLimit);
+        public abstract IList CreateBalls(int number, double XLimit, double YLimit, double Stroke, double MLimit);
+        public abstract void Dance(IList balls, double XLimit, double YLimit, double Stroke);
         public abstract void EndOfTheParty();
     }
 }
