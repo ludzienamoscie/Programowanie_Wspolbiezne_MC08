@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Input;
 using PresentationModel;
 
@@ -48,6 +49,7 @@ namespace PresentationViewModel
         public void StartAction()
         {
             _model.Stop();
+            Thread.Sleep(30);
             Balls = _model.Balls(_ballNumber);
             _model.Start(Balls);
         }
