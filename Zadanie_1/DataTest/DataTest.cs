@@ -18,14 +18,6 @@ namespace DataTest
             {
                 Assert.IsTrue(ball.Position.X < xlim);
                 Assert.IsTrue(ball.Position.Y < ylim);
-                foreach (Ball ball2 in ballList)
-                {
-                    if (ball2 == ball)
-                    {
-                        continue;
-                    }
-                    Assert.IsFalse(ball2.Position.X == ball.Position.X && ball2.Position.Y == ball.Position.Y);
-                }
             }
         }
     }
