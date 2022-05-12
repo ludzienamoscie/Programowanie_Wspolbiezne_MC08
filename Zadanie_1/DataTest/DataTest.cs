@@ -18,6 +18,9 @@ namespace DataTest
             {
                 Assert.IsTrue(ball.Position.X < xlim);
                 Assert.IsTrue(ball.Position.Y < ylim);
+                // Stroke == 10
+                Assert.IsTrue(ball.Position.X >= 10);
+                Assert.IsTrue(ball.Position.Y >= 10);
             }
         }
     }

@@ -117,28 +117,6 @@ namespace Logic
                 }
             }
         }
-        
-        // Pierwiastki funkcji kwadratowej
-        public (double x1, double x2) QuadRoots(double a, double b, double c)
-        {
-            double delta = b * b - 4 * a * c;
-            double x1, x2;
-            x1 = (-b + Math.Sqrt(delta)) / (2 * a);
-            x2 = (-b - Math.Sqrt(delta)) / (2 * a);
-            return (x1, x2);
-        }
-        // Obliczanie parametrow funkcji liniowej przechodzacej przez 2 punkty
-        public (double a, double b) LinearFactors(Vector2D A, Vector2D B)
-        {
-            double a = (B.Y - A.Y) / (B.X - A.X);
-            double b = A.Y - a * A.X;
-            return (a, b);
-        }
-        // Odleglosc euklidesowa
-        public double EuklideanDist(Vector2D A, Vector2D B)
-        {
-            return Math.Sqrt( (A.X - B.X) * (A.X - B.X) + (A.Y - B.Y) * (A.Y - B.Y) );
-        }
 
         public void EllasticCollision(Ball ball1, Ball ball2)
         {
