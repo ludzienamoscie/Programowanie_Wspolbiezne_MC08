@@ -15,6 +15,11 @@ namespace Logic
 {
     internal class BallFactory : LogicAbstractAPI
     {
+        public override double RectWidth => _data.RectWidth;
+        public override double RectHeight => _data.RectHeight;
+        public override double Stroke => _data.Stroke;
+        public override double MassLimit => _data.MassLimit;
+
         private readonly DataAbstractAPI _data;
         private List<Task> _tasks;
         private readonly object locker = new object();
@@ -25,26 +30,10 @@ namespace Logic
         // Tworzenie kul
         public override IList CreateBalls(int number, double XLimit, double YLimit, double Stroke, double MLimit)
         {
-            ObservableCollection<Ball> ballList = new ObservableCollection<Ball>();
-
             _tasks = new List<Task>();
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
-            double x, y, r, m, vx, vy;
-            double speed = 2;
-            Random random = new Random();
-            for (int i = 0; i < number; i++)
-            {
-                Thread.Sleep(1);
-                r = 20;
-                x = random.Next((int)Stroke, (int)(XLimit - r) - 1) + random.NextDouble();
-                y = random.Next((int)Stroke, (int)(YLimit - r) - 1) + random.NextDouble();
-                m = random.Next(1, (int)MLimit - 1) + random.NextDouble();
-                vx = random.NextDouble() * speed * (random.Next(0, 1) == 0 ? -1 : 1);
-                vy = Math.Sqrt(speed * speed - vx*vx) * (random.Next(0, 1) == 0 ? -1 : 1);
-                ballList.Add(new Ball(x, y, r, m, vx, vy));
-            }
-            return ballList;
+            return _data.CreateBalls(number, XLimit, YLimit, Stroke, MLimit);
         }
         // Zatrzymanie kul
         public override void EndOfTheParty()
@@ -58,15 +47,13 @@ namespace Logic
         // Rozpoczecie ruchu kul
         public override void Dance(IList balls, double XLimit, double YLimit, double Stroke)
         {
-            int i = 0;
             foreach (Ball ball in balls)
             {
-                _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, Stroke, i++)));
+                _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, Stroke, ball)));
             }
         }
-        public async void Rolling(IList balls, double XLimit, double YLimit, double Stroke, int ballIndex)
+        public async void Rolling(IList balls, double XLimit, double YLimit, double Stroke, Ball ball)
         {
-            Ball ball = (Ball)balls[ballIndex];
             while (true)
             {
                 await Task.Delay(15);

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Logic
+namespace Data
 {
     public class Vector2D : INotifyPropertyChanged
     {
