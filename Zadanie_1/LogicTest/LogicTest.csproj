@@ -56,6 +56,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{b923990b-c178-4c0a-9939-430bc744b2a4}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logic\Logic.csproj">
       <Project>{ec20a3f4-ef10-4d96-bdde-a62f0dbcc300}</Project>
       <Name>Logic</Name>

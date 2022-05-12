@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Logic;
+using Data;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -42,56 +43,13 @@ namespace LogicTest
         }
 
         [TestMethod]
-        public void CreateBallsTest()
-        {
-            BallFactory ballFactory = new BallFactory();
-            int xlim = 100;
-            int ylim = 100;
-            ObservableCollection<Ball> ballList = (ObservableCollection < Ball > )ballFactory.CreateBalls(100, xlim, ylim, 100);
-            foreach (Ball ball in ballList)
-            {
-                Assert.IsTrue(ball.Position.X < xlim);
-                Assert.IsTrue(ball.Position.Y < ylim);
-                foreach (Ball ball2 in ballList)
-                {
-                    if (ball2 == ball)
-                    {
-                        continue;
-                    }
-                    Assert.IsFalse(ball2.Position.X == ball.Position.X && ball2.Position.Y == ball.Position.Y);
-                }
-            }
-        }
-
-        [TestMethod]
-
-        public void MoveTest()
-        {
-            BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100, 100);
-            Ball ball = balls[0];
-            ball.Position.X = 1;
-            ball.Position.Y = 1;
-            Vector2D targetPos = new Vector2D(2, 2);
-            ballFactory.Move(ball, targetPos, Math.Sqrt(2));
-            Assert.AreEqual(2, ball.Position.X, 0.0001);
-            Assert.AreEqual(2, ball.Position.Y, 0.0001);
-
-            // Nad kulą
-            targetPos = new Vector2D(2, 3);
-            ballFactory.Move(ball, targetPos, 1);
-            Assert.AreEqual(2, ball.Position.X, 0.0001);
-            Assert.AreEqual(3, ball.Position.Y, 0.0001);
-        }
-
-        [TestMethod]
 
         public void StepsTest()
         {
             BallFactory ballFactory = new BallFactory();
-            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100, 100);
+            ObservableCollection<Ball> balls = (ObservableCollection<Ball>)ballFactory.CreateBalls(1, 100, 100, 10, 100);
             Ball ball = new Ball(balls[0]);
-            ballFactory.Dance(balls, 500, 500);
+            ballFactory.Dance(balls, 500, 500, 10);
             // Czekanie na zmiane wspolrzednych
             Thread.Sleep(50);
             Assert.AreNotEqual(balls[0], ball);
