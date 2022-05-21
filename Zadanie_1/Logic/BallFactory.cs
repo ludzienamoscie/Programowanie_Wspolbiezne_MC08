@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Data;
 
 
@@ -51,6 +54,7 @@ namespace Logic
             {
                 _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, Stroke, ball)));
             }
+            _tasks.Add(Task.Run(() => callLogger(100, balls)));
         }
         public async void Rolling(IList balls, double XLimit, double YLimit, double Stroke, Ball ball)
         {
@@ -135,6 +139,61 @@ namespace Logic
             {
                 ball1.Velocity = newV1;
                 ball2.Velocity = newV2;
+            }
+        }
+
+        public void callLogger(int interval, IList balls)
+        {
+            while (true)
+            {
+                Thread.Sleep(interval);
+                // Zatrzymaj log jeśli zatrzymano kule
+                try { _token.ThrowIfCancellationRequested(); }
+                catch (OperationCanceledException) { break; }
+                logBalls(balls);
+            }
+        }
+
+        public void logBalls(IList balls)
+        {
+            lock (locker)
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string jsonBalls = JsonSerializer.Serialize(balls, options);
+                string now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
+
+                string filename = "ball_log.json";
+                string newJsonObject = "{" + String.Format("\n\t\"date\": \"{0}\",\n\t\"balls\":{1}\n", now, jsonBalls) + "}";
+                if (!File.Exists(filename))
+                {
+                    using (StreamWriter sw = new StreamWriter(filename, true))
+                    {
+                        sw.WriteLine("[]");
+                    }
+                }
+
+                string content;
+                using (StreamReader sr = File.OpenText(filename))
+                {
+                    content = sr.ReadToEnd();
+                }
+                // Jeżeli pierwszy obiekt
+                content = content.TrimEnd();
+                content = content.Remove(content.Length - 1, 1);
+                // Pierwszy obiekt, nie dodawaj przecinka przed
+                if (content.Length == 1)
+                {
+                    content = String.Format("{0}\n{1}\n]\n", content.Trim(), newJsonObject);
+                }
+                else
+                {
+                    content = String.Format("{0},\n{1}\n]\n", content.Trim(), newJsonObject);
+                }
+
+                using (StreamWriter sw = File.CreateText(filename))
+                {
+                    sw.Write(content);
+                }
             }
         }
     }
