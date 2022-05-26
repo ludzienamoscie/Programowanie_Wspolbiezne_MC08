@@ -49,11 +49,10 @@ namespace Data
             {
                 NewSession = false;
                 File.Delete(filename);
-            }
-
-            using (StreamWriter sw = new StreamWriter(filename, true))
-            {
-                sw.WriteLine("[]");
+                using (StreamWriter sw = new StreamWriter(filename, true))
+                {
+                    sw.WriteLine("[]");
+                }
             }
 
             string content;
