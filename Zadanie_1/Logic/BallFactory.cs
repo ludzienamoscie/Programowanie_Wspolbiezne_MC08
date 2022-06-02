@@ -25,7 +25,8 @@ namespace Logic
 
         private readonly DataAbstractAPI _data;
         private List<Task> _tasks;
-        private readonly object locker = new object();
+        private readonly object _locker = new object();
+        private readonly object _fileLocker = new object();
         private CancellationToken _token;
         private CancellationTokenSource _tokenSource;
         private string _logPath = "ball_log.json";
@@ -144,17 +145,18 @@ namespace Logic
             string now;
             string newJsonObject;
             // Sekcja krytyczna
-            lock (locker)
-            {
+            lock (_locker) lock (_fileLocker)
+                {
                 ball1.Velocity = newV1;
                 ball2.Velocity = newV2;
 
                 jsonCollisionInfo = JsonSerializer.Serialize(_data.CollisionInfoObject(initVel1, initVel2, ball1, ball2), options);
                 now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
                 newJsonObject = "{" + String.Format("\n\t\"datetime\": \"{0}\",\n\t\"collision\":{1}\n", now, jsonCollisionInfo) + "}";
-
                 _data.AppendObjectToJSONFile(_logPath, newJsonObject);
+                
             }
+
         }
 
         public void CallLogger(int interval, IList balls)
@@ -176,7 +178,7 @@ namespace Logic
             string now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
 
             string newJsonObject = "{" + String.Format("\n\t\"datetime\": \"{0}\",\n\t\"balls\":{1}\n", now, jsonBalls) + "}";
-            lock (locker)
+            lock (_fileLocker)
             {
                 _data.AppendObjectToJSONFile(_logPath, newJsonObject);
             }
