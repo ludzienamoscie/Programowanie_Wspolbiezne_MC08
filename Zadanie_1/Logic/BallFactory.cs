@@ -37,20 +37,22 @@ namespace Logic
             _tasks = new List<Task>();
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
-            return _data.CreateBalls(number, XLimit, YLimit, Stroke, MLimit);
+            return _data.CreateBalls(number, XLimit, YLimit, Stroke, MLimit); ;
         }
         // Zatrzymanie kul
-        public override void EndOfTheParty()
+        public override void EndOfTheParty(IList balls)
         {
             if (_tokenSource != null && !_tokenSource.IsCancellationRequested)
             {
                 _tokenSource.Cancel();
+                LogBalls(balls);
             }
         }
 
         // Rozpoczecie ruchu kul
         public override void Dance(IList balls, double XLimit, double YLimit, double Stroke)
         {
+            LogBalls(balls);
             foreach (Ball ball in balls)
             {
                 _tasks.Add(Task.Run(() => Rolling(balls, XLimit, YLimit, Stroke, ball)));
@@ -135,18 +137,21 @@ namespace Logic
             {
                 return;
             }
+            Vector2D initVel1 = ball1.Velocity;
+            Vector2D initVel2 = ball2.Velocity;
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonCollisionInfo;
+            string now;
+            string newJsonObject;
             // Sekcja krytyczna
             lock (locker)
             {
-                Vector2D initVel1 = ball1.Velocity;
-                Vector2D initVel2 = ball2.Velocity;
                 ball1.Velocity = newV1;
                 ball2.Velocity = newV2;
 
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string jsonCollisionInfo = JsonSerializer.Serialize(_data.CollisionInfoObject(initVel1, initVel2, ball1, ball2), options);
-                string now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
-                string newJsonObject = "{" + String.Format("\n\t\"datetime\": \"{0}\",\n\t\"collision\":{1}\n", now, jsonCollisionInfo) + "}";
+                jsonCollisionInfo = JsonSerializer.Serialize(_data.CollisionInfoObject(initVel1, initVel2, ball1, ball2), options);
+                now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
+                newJsonObject = "{" + String.Format("\n\t\"datetime\": \"{0}\",\n\t\"collision\":{1}\n", now, jsonCollisionInfo) + "}";
 
                 _data.AppendObjectToJSONFile(_logPath, newJsonObject);
             }
@@ -166,7 +171,7 @@ namespace Logic
 
         public void LogBalls(IList balls)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
             string jsonBalls = JsonSerializer.Serialize(balls, options);
             string now = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff");
 

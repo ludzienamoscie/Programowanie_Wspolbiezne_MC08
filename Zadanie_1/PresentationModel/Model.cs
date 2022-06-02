@@ -12,7 +12,7 @@ namespace PresentationModel
         public abstract double MassLimit { get; }
         public abstract IList Balls(int ballNumber);
         public abstract void Start(IList balls);
-        public abstract void Stop();
+        public abstract void Stop(IList balls);
         public static Model CreateApi()
         {
             return new ModelAPI();

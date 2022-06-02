@@ -22,7 +22,7 @@ namespace LogicTest
             // Czekanie na zmiane wspolrzednych
             Thread.Sleep(50);
             Assert.AreNotEqual(balls[0], ball);
-            ballFactory.EndOfTheParty();
+            ballFactory.EndOfTheParty(balls);
             Thread.Sleep(100);
             ball = new Ball(balls[0]);
             // Czekanie na zmiane wspolrzednych

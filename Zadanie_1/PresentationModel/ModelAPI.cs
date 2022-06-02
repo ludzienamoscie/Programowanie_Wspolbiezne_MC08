@@ -17,7 +17,7 @@ namespace PresentationModel
         {
             _logic.Dance(balls, RectWidth, RectHeight, Stroke);
         }
-        public override void Stop() => _logic.EndOfTheParty();
+        public override void Stop(IList balls) => _logic.EndOfTheParty(balls);
 
         public ModelAPI() : this(LogicAbstractAPI.CreateBallAPI()) { }
         public ModelAPI(LogicAbstractAPI logic) { _logic = logic; }

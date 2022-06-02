@@ -45,10 +45,13 @@ namespace Data
         public override void AppendObjectToJSONFile(string filename, string newJsonObject)
         {
             // Jeżeli plik istnieje i jest nowy zestaw kul, to usuń stary plik
-            if (File.Exists(filename) && NewSession)
+            if (NewSession)
             {
                 NewSession = false;
-                File.Delete(filename);
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
                 using (StreamWriter sw = new StreamWriter(filename, true))
                 {
                     sw.WriteLine("[]");

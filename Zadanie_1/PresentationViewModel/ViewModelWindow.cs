@@ -48,14 +48,14 @@ namespace PresentationViewModel
 
         public void StartAction()
         {
-            _model.Stop();
+            _model.Stop(_balls);
             Thread.Sleep(30);
             Balls = _model.Balls(_ballNumber);
             _model.Start(Balls);
         }
         public void StopAction()
         {
-            _model.Stop();
+            _model.Stop(_balls);
         }
         public double RectWidth 
         { 
